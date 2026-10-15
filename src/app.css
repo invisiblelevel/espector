@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+/* Тёмная тема по умолчанию — как в инструментах для разработчиков */
+@theme {
+  --color-bg-base: #0f1115;
+  --color-bg-surface: #181b21;
+  --color-bg-elevated: #21252d;
+  --color-bg-hover: #2a2f38;
+  --color-border: #2f3540;
+  --color-text-primary: #e6e9ef;
+  --color-text-secondary: #9aa3b2;
+  --color-text-muted: #6b7280;
+  --color-accent: #7c5cff;
+  --color-accent-hover: #8f74ff;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+  --color-success: #10b981;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Кастомный скроллбар — чтобы не было убогого дефолтного */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-base);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-bg-hover);
+}
