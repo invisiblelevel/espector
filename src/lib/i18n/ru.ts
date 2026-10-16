@@ -6,9 +6,11 @@ export const ru: Dict = {
     scanning: "Сканирую…",
     folder: "Папка",
     files: "Файлов",
+    plugins: "Плагинов",
     keys: "Ключей",
     conflicts: "Конфликтов",
-    exportReport: "Экспорт отчёта",
+    exportIniReport: "Экспорт отчёта по INI",
+    exportPluginsReport: "Экспорт отчёта по плагинам",
     mergeIni: "Merged.ini",
     language: "Язык",
     info: "О программе",
@@ -16,6 +18,7 @@ export const ru: Dict = {
   tabs: {
     files: "Файлы",
     conflicts: "Конфликты",
+    plugins: "Плагины",
   },
   fileList: {
     searchPlaceholder: "Поиск по имени файла…",
@@ -34,6 +37,21 @@ export const ru: Dict = {
     winner: "Победитель",
     page: "стр.",
     uniqueValues: "уникальных значений",
+    copyValue: "Копировать значение",
+  },
+  plugins: {
+    listTitle: "Плагины",
+    recordsShort: "зап.",
+    author: "Автор",
+    version: "Версия",
+    size: "Размер",
+    records: "Записей",
+    recordTypes: "Типы записей",
+    description: "Описание",
+    masters: "Мастер-файлы",
+    noMasters: "Нет мастеров — независимый плагин",
+    emptyTitle: "Плагинов не найдено",
+    emptyDescription: "В сканированной папке нет .esp, .esm или .esl файлов.",
   },
   viewer: {
     conflictTooltip: "Также в {count} файл(ах):",
@@ -41,23 +59,23 @@ export const ru: Dict = {
   emptyState: {
     pickFolderTitle: "Выберите папку для сканирования",
     pickFolderDescription:
-      "ESPector найдёт все .ini файлы, разберёт их и покажет конфликты между модами.",
+      "ESPector найдёт все .ini и файлы плагинов, разберёт их и покажет конфликты между модами.",
     pickFileTitle: "Выберите файл слева",
     pickFileDescription:
-      "Кликните на любой .ini в списке, чтобы увидеть его содержимое.",
+      "Кликните на любой файл в списке, чтобы увидеть его содержимое.",
   },
   about: {
     close: "Закрыть",
     version: "Версия {v}",
     description:
-      "Лёгкий инструмент для моддеров Bethesda. Сканирует .ini файлы, находит конфликты между модами, определяет победителя и генерирует merged.ini. Работает полностью офлайн — без облаков, подписок и сбора данных.",
+      "Инструмент для моддеров Bethesda. Сканирует .ini и файлы плагинов, находит конфликты между модами, определяет победителя, генерирует merged.ini и показывает, что внутри .esp/.esm/.esl.",
     support: "Поддержать проект",
     license: "Лицензия MIT",
-    copyright: "© 2026 ESPector",
+    copyright: "© 2026 INV.LVL",
   },
   support: {
     title: "Поддержать проект",
-    subtitle: "Кофе разработчику",
+    subtitle: "Разрабу на еду",
     copy: "Копировать",
     thanks: "Спасибо за поддержку ❤️",
   },

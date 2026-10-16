@@ -3,16 +3,17 @@
 import { invoke } from "@tauri-apps/api/core";
 import { open, save } from "@tauri-apps/plugin-dialog";
 
-/// Результат сканирования папки: файлы + сводка + конфликты.
 export interface ScanResult {
   rootPath: string;
   files: IniFile[];
+  plugins: PluginFile[];
   conflicts: ConflictGroup[];
   totalKeys: number;
   conflictCount: number;
 }
 
-/// Один INI-файл.
+// ─── INI ───────────────────────────────────────────────────
+
 export interface IniFile {
   path: string;
   relativePath: string;
@@ -22,14 +23,12 @@ export interface IniFile {
   conflictingKeys: string[];
 }
 
-/// Одна секция INI.
 export interface IniSection {
   name: string;
   keys: IniKey[];
   comments: string[];
 }
 
-/// Один ключ INI.
 export interface IniKey {
   name: string;
   value: string;
@@ -37,7 +36,6 @@ export interface IniKey {
   inlineComment: string | null;
 }
 
-/// Один конфликтный ключ и все файлы, где он встречается.
 export interface ConflictGroup {
   fullKey: string;
   section: string;
@@ -48,7 +46,6 @@ export interface ConflictGroup {
   winner: ConflictWinner;
 }
 
-/// Вхождение ключа в конкретном файле.
 export interface ConflictOccurrence {
   fileRelativePath: string;
   filePath: string;
@@ -56,23 +53,48 @@ export interface ConflictOccurrence {
   line: number;
 }
 
-/// Файл-победитель конфликта.
 export interface ConflictWinner {
   fileRelativePath: string;
   filePath: string;
   value: string;
 }
 
+// ─── Плагины ───────────────────────────────────────────────
+
+export interface PluginFile {
+  path: string;
+  relativePath: string;
+  name: string;
+  size: number;
+  kind: string;
+  header: PluginHeader;
+  totalRecords: number;
+  recordCounts: RecordTypeCount[];
+}
+
+export interface PluginHeader {
+  author: string | null;
+  description: string | null;
+  version: number;
+  masters: string[];
+  isEsm: boolean;
+  isEsl: boolean;
+  isLocalized: boolean;
+}
+
+export interface RecordTypeCount {
+  recordType: string;
+  count: number;
+}
+
 // ─────────────────────────────────────────────────────────────
 // Обёртки над Tauri-командами
 // ─────────────────────────────────────────────────────────────
 
-/// Сканирует указанную папку на .ini-файлы.
 export async function scanFolder(path: string): Promise<ScanResult> {
   return invoke<ScanResult>("scan_folder", { path });
 }
 
-/// Открывает системный диалог выбора папки.
 export async function pickFolder(): Promise<string | null> {
   const selected = await open({
     directory: true,
@@ -83,7 +105,6 @@ export async function pickFolder(): Promise<string | null> {
   return null;
 }
 
-/// Открывает системный диалог «Сохранить как» для отчёта.
 export async function pickSavePath(defaultName: string): Promise<string | null> {
   const selected = await save({
     defaultPath: defaultName,
@@ -96,8 +117,6 @@ export async function pickSavePath(defaultName: string): Promise<string | null> 
   return selected ?? null;
 }
 
-/// Открывает диалог «Сохранить как» специально для merged.ini.
-/// Отдельная функция — потому что фильтры другие.
 export async function pickSaveIniPath(defaultName: string): Promise<string | null> {
   const selected = await save({
     defaultPath: defaultName,
@@ -109,13 +128,10 @@ export async function pickSaveIniPath(defaultName: string): Promise<string | nul
   return selected ?? null;
 }
 
-/// Сохраняет содержимое отчёта в файл по указанному пути.
 export async function saveReport(path: string, content: string): Promise<void> {
   return invoke("save_report", { path, content });
 }
 
-/// Собирает merged.ini из результата сканирования.
-/// Возвращает готовый текст — фронт сохраняет его через saveReport.
 export async function buildMergedIni(result: ScanResult): Promise<string> {
   return invoke<string>("build_merged_ini", { result });
 }

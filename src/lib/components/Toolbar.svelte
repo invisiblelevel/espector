@@ -2,15 +2,18 @@
   import { pickFolder } from "$lib/api";
   import { LL, changeLocale, SUPPORTED_LOCALES, locale } from "$lib/i18n/state.svelte";
   import type { Locale } from "$lib/i18n/state.svelte";
+  import { FolderOpen, FileDown, GitMerge, Info, ListTree } from "lucide-svelte";
 
   interface Props {
     rootPath: string;
     totalFiles: number;
+    totalPlugins: number;
     totalKeys: number;
     conflictCount: number;
     loading: boolean;
     onFolderPicked: (path: string) => void;
     onExportClick: () => void;
+    onExportPluginsClick: () => void;
     onMergeClick: () => void;
     onInfoClick: () => void;
   }
@@ -18,11 +21,13 @@
   let {
     rootPath,
     totalFiles,
+    totalPlugins,
     totalKeys,
     conflictCount,
     loading,
     onFolderPicked,
     onExportClick,
+    onExportPluginsClick,
     onMergeClick,
     onInfoClick,
   }: Props = $props();
@@ -40,39 +45,63 @@
   }
 </script>
 
-<header class="flex items-center gap-4 px-4 py-3 border-b border-[var(--color-border)] bg-[var(--color-bg-surface)]">
+<header class="flex items-center gap-3 px-4 py-3 border-b border-[var(--color-border)] bg-[var(--color-bg-surface)]">
   <button
     onclick={handlePick}
     disabled={loading}
-    class="px-4 py-2 rounded-md bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+    title={L.toolbar.pickFolder}
+    class="flex items-center gap-2 px-4 py-2 rounded-md
+           bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)]
+           text-white font-medium transition-colors
+           disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
   >
-    {loading ? L.toolbar.scanning : L.toolbar.pickFolder}
+    <FolderOpen size={16} />
+    <span>{loading ? L.toolbar.scanning : L.toolbar.pickFolder}</span>
   </button>
 
   {#if rootPath}
-    <div class="flex items-center gap-2 shrink-0">
+    <div class="flex items-center gap-1 shrink-0">
       <button
         onclick={onExportClick}
-        class="px-3 py-2 rounded-md text-sm font-medium transition-colors
+        title={L.toolbar.exportIniReport}
+        aria-label={L.toolbar.exportIniReport}
+        class="w-9 h-9 rounded-md flex items-center justify-center
                bg-[var(--color-bg-base)] text-[var(--color-text-secondary)]
                border border-[var(--color-border)]
-               hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+               hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]
+               transition-colors cursor-pointer"
       >
-        {L.toolbar.exportReport}
+        <FileDown size={16} />
+      </button>
+
+      <button
+        onclick={onExportPluginsClick}
+        title={L.toolbar.exportPluginsReport}
+        aria-label={L.toolbar.exportPluginsReport}
+        class="w-9 h-9 rounded-md flex items-center justify-center
+               bg-[var(--color-bg-base)] text-[var(--color-text-secondary)]
+               border border-[var(--color-border)]
+               hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]
+               transition-colors cursor-pointer"
+      >
+        <ListTree size={16} />
       </button>
 
       <button
         onclick={onMergeClick}
-        class="px-3 py-2 rounded-md text-sm font-medium transition-colors
+        title={L.toolbar.mergeIni}
+        aria-label={L.toolbar.mergeIni}
+        class="w-9 h-9 rounded-md flex items-center justify-center
                bg-[var(--color-bg-base)] text-[var(--color-text-secondary)]
                border border-[var(--color-border)]
-               hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+               hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]
+               transition-colors cursor-pointer"
       >
-        {L.toolbar.mergeIni}
+        <GitMerge size={16} />
       </button>
     </div>
 
-    <div class="flex-1 min-w-0">
+    <div class="flex-1 min-w-0 ml-2">
       <div class="text-xs text-[var(--color-text-muted)]">{L.toolbar.folder}</div>
       <div class="text-sm text-[var(--color-text-secondary)] truncate" title={rootPath}>
         {rootPath}
@@ -83,6 +112,10 @@
       <div>
         <span class="text-[var(--color-text-muted)]">{L.toolbar.files}: </span>
         <span class="text-[var(--color-text-primary)] font-medium">{totalFiles}</span>
+      </div>
+      <div>
+        <span class="text-[var(--color-text-muted)]">{L.toolbar.plugins}: </span>
+        <span class="text-[var(--color-text-primary)] font-medium">{totalPlugins}</span>
       </div>
       <div>
         <span class="text-[var(--color-text-muted)]">{L.toolbar.keys}: </span>
@@ -105,7 +138,7 @@
     <select
       value={locale.value}
       onchange={handleLocaleChange}
-      class="px-2 py-1 rounded-md text-xs cursor-pointer
+      class="px-2 py-1.5 rounded-md text-xs cursor-pointer
              bg-[var(--color-bg-base)] text-[var(--color-text-secondary)]
              border border-[var(--color-border)]
              hover:border-[var(--color-accent)] focus:outline-none
@@ -121,13 +154,13 @@
       onclick={onInfoClick}
       title={L.toolbar.info}
       aria-label={L.toolbar.info}
-      class="w-8 h-8 rounded-md flex items-center justify-center text-sm font-semibold
+      class="w-9 h-9 rounded-md flex items-center justify-center
              bg-[var(--color-bg-base)] text-[var(--color-text-secondary)]
              border border-[var(--color-border)]
              hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]
              transition-colors cursor-pointer"
     >
-      i
+      <Info size={16} />
     </button>
   </div>
 </header>

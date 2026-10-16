@@ -61,8 +61,9 @@
       <li>
         <button
           onclick={() => onSelect(file.path)}
-          class="w-full text-left px-3 py-2 hover:bg-[var(--color-bg-hover)] transition-colors"
-          class:bg-[var(--color-bg-elevated)]={selectedPath === file.path}
+          class="w-full text-left px-3 py-2 transition-all duration-150
+                 hover:bg-[var(--color-bg-hover)]
+                 {selectedPath === file.path ? 'bg-[var(--color-bg-elevated)] border-l-2 border-l-[var(--color-accent)]' : 'border-l-2 border-l-transparent'}"
         >
           <div class="flex items-center gap-2">
             <span class="text-sm text-[var(--color-text-primary)] truncate flex-1" title={file.path}>

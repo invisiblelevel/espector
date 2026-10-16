@@ -4,9 +4,11 @@ export const en = {
     scanning: "Scanning…",
     folder: "Folder",
     files: "Files",
+    plugins: "Plugins",
     keys: "Keys",
     conflicts: "Conflicts",
-    exportReport: "Export Report",
+    exportIniReport: "Export INI report",
+    exportPluginsReport: "Export plugins report",
     mergeIni: "Merged.ini",
     language: "Language",
     info: "About",
@@ -14,6 +16,7 @@ export const en = {
   tabs: {
     files: "Files",
     conflicts: "Conflicts",
+    plugins: "Plugins",
   },
   fileList: {
     searchPlaceholder: "Search by file name…",
@@ -32,6 +35,21 @@ export const en = {
     winner: "Winner",
     page: "line",
     uniqueValues: "unique values",
+    copyValue: "Copy value",
+  },
+  plugins: {
+    listTitle: "Plugins",
+    recordsShort: "rec.",
+    author: "Author",
+    version: "Version",
+    size: "Size",
+    records: "Records",
+    recordTypes: "Record types",
+    description: "Description",
+    masters: "Masters",
+    noMasters: "No masters — standalone plugin",
+    emptyTitle: "No plugins found",
+    emptyDescription: "No .esp, .esm or .esl files in the scanned folder.",
   },
   viewer: {
     conflictTooltip: "Also in {count} file(s):",
@@ -39,23 +57,23 @@ export const en = {
   emptyState: {
     pickFolderTitle: "Choose a folder to scan",
     pickFolderDescription:
-      "ESPector will find all .ini files, parse them, and show conflicts between mods.",
+      "ESPector will find all .ini and plugin files, parse them, and show conflicts between mods.",
     pickFileTitle: "Choose a file on the left",
     pickFileDescription:
-      "Click any .ini in the list to see its content.",
+      "Click any file in the list to see its content.",
   },
   about: {
     close: "Close",
     version: "Version {v}",
     description:
-      "A lightweight tool for Bethesda modders. Scans .ini files, detects conflicts between mods, identifies the winning value, and generates a merged.ini. Works fully offline — no clouds, no subscriptions, no data collection.",
+      "A tool for Bethesda modders. Scans .ini and plugin files, detects conflicts between mods, identifies the winning value, generates a merged.ini, and shows what's inside .esp/.esm/.esl plugins.",
     support: "Support the project",
     license: "MIT License",
-    copyright: "© 2026 ESPector",
+    copyright: "© 2026 INV.LVL",
   },
   support: {
     title: "Support the project",
-    subtitle: "A coffee for the dev",
+    subtitle: "A food for the dev",
     copy: "Copy",
     thanks: "Thanks for your support ❤️",
   },

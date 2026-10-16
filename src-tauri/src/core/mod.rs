@@ -1,6 +1,7 @@
-//! Ядро ESPector: парсинг INI, сканирование папок, генерация merged.ini.
-//! Ничего не знает про Tauri — чистый Rust, тестируется отдельно.
+//! Ядро ESPector: INI, плагины, merge.
 
+pub mod esp;
+pub mod esp_records;
 pub mod ini;
 pub mod merge;
 pub mod scanner;

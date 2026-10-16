@@ -11,7 +11,7 @@
   let L = $derived(LL());
 </script>
 
-<div class="flex-1 flex items-center justify-center bg-[var(--color-bg-base)]">
+<div class="flex-1 flex items-center justify-center bg-[var(--color-bg-base)] animate-fade-in">
   <div class="text-center max-w-md px-6">
     {#if !hasRoot}
       <div class="text-5xl mb-4">🔍</div>

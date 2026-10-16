@@ -46,7 +46,7 @@
         ESPector
       </h1>
       <p class="text-xs text-[var(--color-text-muted)] mb-5">
-        {L.about.version.replace("{v}", "0.1.0")}
+        {L.about.version.replace("{v}", "1.0.0")}
       </p>
 
       <p class="text-[13.5px] leading-relaxed text-[var(--color-text-secondary)]">

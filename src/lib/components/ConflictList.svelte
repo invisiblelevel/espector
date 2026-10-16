@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { ConflictGroup } from "$lib/api";
   import { LL } from "$lib/i18n/state.svelte";
+  import { Copy, Check } from "lucide-svelte";
 
   interface Props {
     conflicts: ConflictGroup[];
@@ -24,6 +25,23 @@
   let subtitle = $derived(
     `${differingCount} ${L.conflictList.differingCount}, ${sameCount} ${L.conflictList.sameCount}`,
   );
+
+  // Хранит ключ "filePath:line", для которого недавно скопировали.
+  // Сбрасывается через 1.5 секунды.
+  let copiedKey = $state<string | null>(null);
+
+  async function copyValue(key: string, value: string, e: MouseEvent) {
+    e.stopPropagation(); // не пробрасываем в родительскую кнопку
+    try {
+      await navigator.clipboard.writeText(value);
+      copiedKey = key;
+      setTimeout(() => {
+        if (copiedKey === key) copiedKey = null;
+      }, 1500);
+    } catch {
+      // Молча игнорируем — буфер может быть недоступен.
+    }
+  }
 </script>
 
 <section class="flex-1 overflow-y-auto bg-[var(--color-bg-base)]">
@@ -70,28 +88,55 @@
           <ul>
             {#each conflict.occurrences as occ (occ.filePath + ":" + occ.line)}
               {@const isWinner = occ.filePath === conflict.winner.filePath}
+              {@const occKey = occ.filePath + ":" + occ.line}
+              {@const isCopied = copiedKey === occKey}
               <li>
-                <button
-                  onclick={() => onFileClick(occ.filePath)}
-                                    class="w-full text-left px-4 py-2 hover:bg-[var(--color-bg-hover)] transition-colors flex items-center gap-3 {isWinner ? 'bg-[var(--color-success)]/5' : ''}"
+                <div
+                  class="w-full flex items-center gap-3 px-4 py-2 transition-all duration-150
+                         hover:bg-[var(--color-bg-hover)]
+                         {isWinner ? 'bg-[var(--color-success)]/5 border-l-2 border-l-[var(--color-success)]' : 'border-l-2 border-l-transparent'}"
                 >
-                  <span class="text-xs text-[var(--color-text-secondary)] truncate flex-1" title={occ.filePath}>
-                    {occ.fileRelativePath}
-                  </span>
-
-                  {#if isWinner}
-                    <span class="text-xs px-2 py-0.5 rounded bg-[var(--color-success)]/20 text-[var(--color-success)] shrink-0">
-                      {L.conflictList.winner}
+                  <button
+                    onclick={() => onFileClick(occ.filePath)}
+                    class="flex-1 min-w-0 text-left flex items-center gap-3 cursor-pointer"
+                    title={occ.filePath}
+                  >
+                    <span class="text-xs text-[var(--color-text-secondary)] truncate flex-1">
+                      {occ.fileRelativePath}
                     </span>
-                  {/if}
 
-                  <span class="text-xs text-[var(--color-text-muted)] shrink-0">
-                    {L.conflictList.page} {occ.line}
-                  </span>
+                    {#if isWinner}
+                      <span class="text-xs px-2 py-0.5 rounded bg-[var(--color-success)]/20 text-[var(--color-success)] shrink-0">
+                        {L.conflictList.winner}
+                      </span>
+                    {/if}
+
+                    <span class="text-xs text-[var(--color-text-muted)] shrink-0">
+                      {L.conflictList.page} {occ.line}
+                    </span>
+                  </button>
+
                   <span class="text-sm text-[var(--color-text-primary)] font-mono shrink-0">
                     = {occ.value}
                   </span>
-                </button>
+
+                  <button
+                    onclick={(e) => copyValue(occKey, occ.value, e)}
+                    title={L.conflictList.copyValue}
+                    aria-label={L.conflictList.copyValue}
+                    class="w-6 h-6 rounded flex items-center justify-center shrink-0
+                           transition-colors cursor-pointer
+                           {isCopied
+                             ? 'text-[var(--color-success)]'
+                             : 'text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:bg-[var(--color-bg-base)]'}"
+                  >
+                    {#if isCopied}
+                      <Check size={13} />
+                    {:else}
+                      <Copy size={13} />
+                    {/if}
+                  </button>
+                </div>
               </li>
             {/each}
           </ul>

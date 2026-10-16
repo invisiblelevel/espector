@@ -51,7 +51,7 @@
   }
 </script>
 
-<section class="flex-1 overflow-y-auto bg-[var(--color-bg-base)]">
+<section class="flex-1 overflow-y-auto bg-[var(--color-bg-base)] animate-fade-in">
   <div class="sticky top-0 px-4 py-2 border-b border-[var(--color-border)] bg-[var(--color-bg-surface)] z-10">
     <div class="text-sm font-medium text-[var(--color-text-primary)]">{file.relativePath}</div>
     <div class="text-xs text-[var(--color-text-muted)] truncate" title={file.path}>{file.path}</div>
